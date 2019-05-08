@@ -1,3 +1,4 @@
+import os
 import requests
 from urllib.parse import quote
 import random
@@ -12,8 +13,6 @@ link = 'https://synergy.ru/lander/alm/lander.php?r=land/' \
        '&version=index&form=home-b&graccount=synergy&grcampaign=e_mail_chain_vpo'
 
 form_count = 0
-fail_count = 0
-max_fails = 5
 success_message = 'Спасибо, ваше сообщение получено!'
 
 while True:
@@ -31,19 +30,16 @@ while True:
 
         if success_message in content:
             form_count += 1
-            fail_count = 0
         else:
             print('Something went wrong.. Logging.')
-            fail_count += 1
             with open("log.txt", "a") as log_file:
                 log_file.write(content + '\n\n\n')
 
         if form_count % 50 == 0:
             print(f'{form_count} forms have been submitted.')
 
-        if fail_count > max_fails:
-            print('Looks like they knows something.. Stopping.')
-            break
     except ConnectionError:
-        # move_out()
+        print('We have been banned. Moving out..')
+        r = requests.get('http://169.254.169.254/metadata/v1/id')
+        move_out(r.content)
         break
