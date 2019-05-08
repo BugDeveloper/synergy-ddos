@@ -2,6 +2,7 @@ import requests
 from urllib.parse import quote
 import random
 from random import randint
+from moving_out import move_out
 
 file = open('names.txt', 'r')
 names = file.read().split(', ')
@@ -24,21 +25,25 @@ while True:
         'personalDataAgree': 'on',
         'url': 'https%3A%2F%2Fsynergy.ru%2F%3Futm_source%3Dthanks%26',
     }
-    r = requests.post(link, data=payload)
-    status, content = r.status_code, r.content.decode()
+    try:
+        r = requests.post(link, data=payload)
+        status, content = r.status_code, r.content.decode()
 
-    if success_message in content:
-        form_count += 1
-        fail_count = 0
-    else:
-        print('Something went wrong.. Logging.')
-        fail_count += 1
-        with open("log.txt", "a") as log_file:
-            log_file.write(content + '\n\n\n')
+        if success_message in content:
+            form_count += 1
+            fail_count = 0
+        else:
+            print('Something went wrong.. Logging.')
+            fail_count += 1
+            with open("log.txt", "a") as log_file:
+                log_file.write(content + '\n\n\n')
 
-    if form_count % 50 == 0:
-        print(f'{form_count} forms have been submitted.')
+        if form_count % 50 == 0:
+            print(f'{form_count} forms have been submitted.')
 
-    if fail_count > max_fails:
-        print('Looks like they knows something.. Stopping.')
+        if fail_count > max_fails:
+            print('Looks like they knows something.. Stopping.')
+            break
+    except ConnectionError:
+        move_out()
         break
