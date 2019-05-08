@@ -45,5 +45,5 @@ while True:
             print('Looks like they knows something.. Stopping.')
             break
     except ConnectionError:
-        move_out()
+        # move_out()
         break

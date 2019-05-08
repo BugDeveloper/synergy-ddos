@@ -5,6 +5,8 @@ CONFIG = 'config.json'
 
 
 def move_out():
+    print('We have been banned. Moving out..')
+
     def _get_valid_id(items):
         try:
             return items[int(input())]
@@ -39,7 +41,7 @@ def move_out():
         image=image,
         name=name,
         size=size,
-        user_data='/root/deploy.sh'
+        user_data=user_data
     )
 
     droplet.create()
