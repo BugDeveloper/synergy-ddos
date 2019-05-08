@@ -39,7 +39,7 @@ def move_out():
         image=image,
         name=name,
         size=size,
-        user_data=user_data
+        user_data='/root/deploy.sh'
     )
 
     droplet.create()
