@@ -45,6 +45,3 @@ def move_out():
     )
 
     droplet.create()
-
-
-move_out()
